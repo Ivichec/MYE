@@ -1,4 +1,4 @@
 from django.shortcuts import render
-
-# Create your views here.
-def defdef():
+from codigo.models import Datos
+def index(request):
+    return render(request, "hospitales/Inicio.html")
