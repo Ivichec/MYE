@@ -4,3 +4,5 @@ def index(request):
     return render(request, "hospitales/Inicio.html")
 def index1(request):
     return render(request, "hospitales/Inicio.html")
+def index2(request):
+    return render(request, "hospitales/Inicio.html")
