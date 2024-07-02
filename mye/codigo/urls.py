@@ -10,4 +10,5 @@ urlpatterns = [
     path('formularioDicPost', views.formularioDiccionarioPost, name='iraformularioDicPost'),
     path('NuevoUser', views.CrearUsuario, name='NuevoUser'),
     path('darAlta', views.darAlta, name='darAlta'),
+    path('BotonUser', views.CompruebaPass, name='BotonUser'),
 ]
