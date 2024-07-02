@@ -1,0 +1,44 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #b3a594; /* El color de fondo de la imagen */
+    height: 100vh; /* Asegura que el body ocupe toda la altura de la ventana */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    position: relative;
+    text-align: center;
+}
+
+.main-image {
+    max-width: 90%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+.link {
+    position: absolute;
+    color: #b0da70; /* Color verde para los enlaces */
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 1.8em; /* Ajuste del tamaño de fuente para mejor visualización */
+    font-family: 'Amatic SC', cursive; /* Fuente de Google Fonts */
+}
+
+.diccionarios {
+    bottom: 5%;
+    right: 7%;
+}
+
+.que-es-mye {
+    top: 4%;
+    left: 9%;
+}
+
+.link:hover {
+    color: #8abf56;
+}
