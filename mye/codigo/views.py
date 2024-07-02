@@ -1,5 +1,5 @@
 from django.shortcuts import render
-#from codigo.models import AltaEmp
+from codigo.models import MiraPass
 
 def index(request):
     return render(request, "inicial/inicio.html")
@@ -16,9 +16,19 @@ def Ir_a_que_es_mye(request):
 
 def CompruebaPass(request):
     mail = request.POST['txtemail']
-    emple = Empleado()
-    cursor = emple.devolverdato(mail)
-    contexto = {
-        'listado_empleados': cursor
-    }
-    return render(request, "deportes/Empleados.html", contexto)
+    passw = request.POST['txtcontrasena']
+    mira = MiraPass()
+    cursor = mira.devolverpass(mail)
+    if cursor.getvalue() == passw:
+        print(cursor)
+        print(passw)
+        return render(request, "inicial/menuini.html")
+
+    else:
+        print(cursor)
+        print(passw)
+        contexto = {
+            'errorlogeo': False
+        }
+        return render(request, "inicial/login.html",contexto)
+

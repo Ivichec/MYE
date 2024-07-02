@@ -21,3 +21,6 @@ urlpatterns = [
     path('inicio/', include('codigo.urls')),
     path('admin/', admin.site.urls),
 ]
+
+
+

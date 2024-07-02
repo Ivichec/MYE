@@ -6,6 +6,6 @@ urlpatterns = [
     path('inicio', views.index, name='index'),
     path('a_Login', views.Ir_a_login, name='iralogin'),
     path('a_que_es_mye', views.Ir_a_que_es_mye, name='iraqueesmye'),
-    path('BotonUser', views.CompruebaPass, name='comprueba'),
+    path('BotonUser', views.CompruebaPass, name='BotonUser'),
     path('NuevoUser', views.CrearUsuario, name='NuevoUser'),
 ]
