@@ -6,15 +6,15 @@
 </head>
 
 <body>
-<form method="post" action="cliente">
+<form method="post" action="BotonUser">
         {% csrf_token %}
     <center>
     <H1><B>FICHA DEL CLIENTE</B></H1>
-       Email<input type="text" name="nombre" value="" />
-       Contraseña<input type="text" name="apellido1" value="" />
-       >
-            <input type="SUBMIT" value="Registrar" />
-            <input type="RESET" value="Borrar" />
+       Email<input type="text" name="txtemail" value="" />
+       Contraseña<input type="text" name="txtcontrasena" value="" />
+
+            <input type="SUBMIT" value="Enviar" />
+        <a href="NuevoUser" >Crear nuevo usuario</a>
 
    </center>
 </form>
