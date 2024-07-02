@@ -9,3 +9,4 @@ def Ir_a_login(request):
 
 def Ir_a_que_es_mye(request):
     # pendiente desarrollar función que llame al video de presentación
+    pass
