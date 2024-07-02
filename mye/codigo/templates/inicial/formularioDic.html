@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario Dinámico</title>
+    <style>
+        .form-group {
+            margin-bottom: 10px;
+        }
+    </style>
+    <script>
+        let fieldCount = 1;
+
+        function addField() {
+            fieldCount++;
+
+            // Crear un nuevo div para el campo
+            const newDiv = document.createElement("div");
+            newDiv.className = "form-group";
+
+            // Crear una nueva etiqueta
+            const newLabel = document.createElement("label");
+            newLabel.setAttribute("for", "campo" + fieldCount);
+            newLabel.innerText = "Palabra " + fieldCount + ":";
+
+            // Crear un nuevo input
+            const newInput = document.createElement("input");
+            newInput.type = "text";
+            newInput.id = "campo" + fieldCount;
+            newInput.name = "campo[]";
+            newInput.placeholder = "Nuevo campo " + fieldCount;
+
+            // Agregar la etiqueta y el input al div
+            newDiv.appendChild(newLabel);
+            newDiv.appendChild(newInput);
+
+            // Agregar el nuevo div al formulario
+            document.getElementById("formulario").appendChild(newDiv);
+        }
+    </script>
+</head>
+<body>
+    <h1>Nuevo Diccionario</h1>
+    <form id="formulario" action="{% url 'iraformularioDicPost' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="campo1">Palabra 1:</label>
+            <input type="text" id="campo1" name="campo[]" placeholder="Nuevo campo 1">
+        </div>
+    </form>
+    <button type="button" onclick="addField()">Agregar más campos</button>
+    <button type="submit" form="formulario">Enviar Diccionario</button>
+
+</body>
+</html>
