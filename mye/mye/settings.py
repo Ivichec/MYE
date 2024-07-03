@@ -122,3 +122,30 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#Configuracion para las cookies de sesion
+# Use cookie-based sessions
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+
+# Optional: You can set the session cookie name
+# Default is 'sessionid'
+SESSION_COOKIE_NAME = 'myapp_sessionid'
+
+# Optional: You can set the age of session cookies (in seconds)
+# Default is 1209600 seconds (2 weeks)
+SESSION_COOKIE_AGE = 86400  # 1 day
+
+# Optional: You can set the domain of the session cookie
+# SESSION_COOKIE_DOMAIN = 'example.com'
+
+# Optional: You can set the path of the session cookie
+# SESSION_COOKIE_PATH = '/'
+
+# Optional: You can set whether the session cookie is secure (HTTPS)
+# SESSION_COOKIE_SECURE = True
+
+# Optional: You can set whether the session cookie is HttpOnly
+SESSION_COOKIE_HTTPONLY = True
+
+# Optional: You can set whether the session cookie uses the "SameSite" attribute
+# SESSION_COOKIE_SAMESITE = 'Lax'

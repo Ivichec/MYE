@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="{% static 'estilos/styles.css'%}" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div id="contenedorPagina">
+    <header>
+        {% include 'inicial/navbar.html' %}
+        {% block content %}
+        {% endblock content %}
+    </header>
+    <aside id="aLaIzquierda">
+    </aside>
+    <section id="contenidoPrincipal">
+        <h1>Hacer un formulario para realizar test donde te tendran que traer de la base de datos las palabras y el usuario le tenga que escribir la palabra en el idioma que elija</h1>
+        <a class="nav" style="background-color: #FF8459" href="{% url 'enviarTest' %}">Enviar tu Test</a>
+    </section>
+    <aside id="aLaDerecha">
+
+    </aside>
+    <footer id="piePagina">
+        {% include 'inicial/footer.html' %}
+        {% block content1 %}
+        {% endblock content1 %}
+    </footer>
+</div>
+</body>
+</html>

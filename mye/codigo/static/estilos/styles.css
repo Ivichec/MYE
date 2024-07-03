@@ -42,3 +42,138 @@ body {
 .link:hover {
     color: #8abf56;
 }
+
+/*css ivan prueba*/
+    *
+    {
+      margin: 0;
+      padding: 0;
+    }
+    #espacioSuperior
+    {
+      background-color: #E6E6E6;
+    }
+    #contenedorPagina
+    {
+      margin: 0 auto;
+      border: 1px solid #9900CC;
+      height: 85%;
+    }
+
+    #encabezado
+    {
+      height: 50px;
+      background-color: #FF3300;
+    }
+    #aLaIzquierda
+    {
+      width: 20%;
+      height: 500px;
+      float: left;
+      background-color: #;
+    }
+    #contenidoPrincipal
+    {
+      width: 60%;
+      text-align: center;
+      float: left;
+      background-color: #A8A8C5;
+      margin: 0 auto;
+    }
+    #aLaDerecha
+    {
+      width: 20%;
+      height: 500px;
+      float: right;
+      background-color: #;
+    }
+    #piePagina
+    {
+     clear: both;
+     height: 25px;
+     background-color: #;
+     text-align: center; /* Centra el texto dentro del pie de página */
+     width: 100%; /* Asegúrate de que el pie de página ocupe el ancho completo del contenedor */
+     margin: 0 auto; /* Centra el pie de página horizontalmente */
+    }
+    .nav,
+.nav ul {
+  background-color: rgb(80, 200, 130);
+  padding: 0px;
+  margin: 0px;
+  text-align: center;
+  font-size: 2vh;
+}
+.nav li {
+  transition: 300ms linear;
+  background-color: rgb(80, 200, 130);
+  border-radius: 0em;
+  box-sizing: border-box;
+  padding: 10px 25px;
+  display: inline-block;
+  min-width: 153px;
+  cursor: pointer;
+  position: relative;
+}
+.nav li:hover {
+    border-radius: 1em;
+  background-color: rgb(42, 105, 68);
+  color: #d5d9d9;
+  transition: 300ms linear;
+}
+#main-footer {
+    background: #fff;
+}
+
+#main-footer p a {
+    padding-bottom: 40px;
+    font-size: 25px;
+    text-decoration: none;
+}
+
+#main-footer p {
+    text-align: center;
+}
+
+.social-links {
+    list-style:none;
+    margin:0;
+    padding:0;
+    margin-bottom:30px;
+}
+
+.social-links li{
+    display:inline-block;
+    margin:0 5px;
+    border-radius:3px;
+    box-shadow:0 4px 0 transparent;
+    -webkit-transition:all .3s ease-out;
+    transition:all .3s ease-out;
+}
+
+.social-links li a {
+    display:block;
+    color:#fff;
+    font-size:21px;
+    width:50px;
+    height:50px;
+    line-height:50px;
+    text-align:center;
+    background:#509B9E;
+    border-radius:50%;
+    -webkit-transition:all .3s ease-out;
+    transition:all .3s ease-out;
+}
+
+.social-links li a:hover {
+    color:#fff;
+    background:#f9398c;
+}
+#fcc-btn {
+  background-color: #199319;
+  color: white;
+  padding: 15px 25px;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+}

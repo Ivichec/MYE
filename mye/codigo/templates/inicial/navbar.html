@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div class="nav">
+    <nav>
+      <ul>
+        <li><a href="{% url 'menuIni' %}">Home</a></li>
+        <li><a href="{% url 'Diccionarios' %}">Tus Diccionarios</a></li>
+        <li><a href="{% url 'Tests' %}">Tus Tests</a></li>
+        <li><a href="{% url 'cerrarSesion' %}">Cerrar Sesion</a></li>
+      </ul>
+    </nav>
+    </div>
+</body>
+</html>
