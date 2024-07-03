@@ -77,8 +77,10 @@ def CompruebaPass(request):
     mira = MiraPass()
     cursor = mira.devolverpass(mail)
     if cursor.getvalue() == passw:
+        cursor2 = mira.devolverId(mail)
+        id = cursor2.getvalue()
         #creo una cookie para saber si el usuario esta logeado
-        set_session_view(request)
+        set_session_view(id)
         return render(request, "inicial/menuini.html")
     else:
         print(cursor)
@@ -104,6 +106,8 @@ def prueba(request):
 #Funcion para crear una cookie con el id de la base de datos de el usuaio logeado
 def set_session_view(request):
     request.session['id'] = 'Iván'  #Llamar a la base de datos con un metodo para que te devuelva el id de usuario, cambiar el 'Iván' por eso
+
+    #he creado una funcion para esto, revisala, se llama devolverId y está en Models. Pretendo devuelver una variable var1 que es el id
     get_session_view(request)
     return render(request, 'inicial/menuini.html')
 
@@ -125,3 +129,15 @@ def delete_session_view(request):
     except KeyError:
         pass
     return render(request, 'inicial/inicio.html')
+
+def muestraDic(request):
+    #aqui hay que traer la id con la función que ha hecho Iván
+
+
+    muestra = MiraPass()
+    cursor=muestra.TraeDiccionarios(id)
+    contexto = {
+        'listado_diccionarios': cursor
+    }
+    return render(request, "inicial/Diccionarios.html", contexto)
+#con esto hacemos el for dentro del html Diccionarios

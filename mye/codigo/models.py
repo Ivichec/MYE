@@ -77,3 +77,34 @@ class MiraPass:
             print("Error: ", error)
         cursor.close()
         return aaa
+
+
+
+#utiizando el procedimiento almacenado RETONRAIDUSR, nos trae el id de usuario
+    def devolverId(self, miemail):
+        cursor = self.connection.cursor()
+        try:
+            var1 = cursor.var(cx_Oracle.NUMBER)
+            print("wjh.gfqouñwhfglasdhglasjfdhglasfdg")
+            args = (miemail, var1)
+            cursor.callproc('RETORNAIDUSR ', args)
+
+            print(var1.getvalue())
+
+        except self.connection.Error as error:
+            print("Error: ", error)
+        cursor.close()
+        return var1.getvalue()
+
+    def TraeDiccionarios(self,idusuario):
+        #me hace falta traer la id con la función que ha puesto Iván
+        cursor = self.connection.cursor()
+
+        try:
+            consulta = ("SELECT myeDICCIONARIOS.TITULO FROM myeDICCIONARIOS where USRID=:p1")
+            cursor.execute(consulta, (idusuario,))
+            print(cursor)
+        except self.connection.Error as error:
+            print("Error: ", error)
+
+        return cursor
