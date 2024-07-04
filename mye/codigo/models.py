@@ -1,5 +1,3 @@
-from django.db import models
-
 # Create your models here.
 import cx_Oracle
 
@@ -9,7 +7,7 @@ class Usuario:
     def __init__(self):
         self.connection = cx_Oracle.connect("system", "pythonoracle", "localhost/XE")
 
-    #def insertdato(self, idper, nombre, img, idserie):
+    # def insertdato(self, idper, nombre, img, idserie):
 
     def devolverRoles(self):
         cursor = self.connection.cursor()
@@ -43,24 +41,21 @@ class Usuario:
         finally:
             cursor.close()
 
-    class MiraPass:
-        def __init__(self):
-            self.connection = cx_Oracle.connect("system", "pythonoracle", "localhost/XE")
+    def devolverpass(self, miemail):
+        cursor = self.connection.cursor()
+        try:
+            aaa = cursor.var(cx_Oracle.STRING)
+            print("wjh.gfqouñwhfglasdhglasjfdhglasfdg")
+            args = (miemail, aaa)
+            cursor.callproc('RETORNAPASS', args)
 
-        def devolverpass(self, miemail):
-            cursor = self.connection.cursor()
-            try:
-                aaa = cursor.var(cx_Oracle.STRING)
-                print("wjh.gfqouñwhfglasdhglasjfdhglasfdg")
-                args = (miemail, aaa)
-                cursor.callproc('RETORNAPASS', args)
+            print(aaa.getvalue())
 
-                print(aaa.getvalue())
+        except self.connection.Error as error:
+            print("Error: ", error)
+        cursor.close()
+        return aaa
 
-            except self.connection.Error as error:
-                print("Error: ", error)
-            cursor.close()
-            return aaa
     def __init__(self):
         self.connection = cx_Oracle.connect("system", "pythonoracle", "localhost/XE")
 
@@ -79,7 +74,7 @@ class Usuario:
         cursor.close()
         return aaa
 
-#utiizando el procedimiento almacenado RETONRAIDUSR, nos trae el id de usuario
+    # utiizando el procedimiento almacenado RETONRAIDUSR, nos trae el id de usuario
     def devolverId(self, miemail):
         cursor = self.connection.cursor()
         try:
@@ -95,8 +90,8 @@ class Usuario:
         cursor.close()
         return var1.getvalue()
 
-    def TraeDiccionarios(self,idusuario):
-        #me hace falta traer la id con la función que ha puesto Iván
+    def TraeDiccionarios(self, idusuario):
+        # me hace falta traer la id con la función que ha puesto Iván
         cursor = self.connection.cursor()
 
         try:
