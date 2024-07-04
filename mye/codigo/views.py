@@ -80,9 +80,9 @@ def CompruebaPass(request):
     cursor = mira.devolverpass(mail)
     if cursor.getvalue() == passw:
         cursor2 = mira.devolverId(mail)
-        id = cursor2.getvalue()
+
         #creo una cookie para saber si el usuario esta logeado
-        set_session_view(request,id)
+        set_session_view(request,cursor2)
         return render(request, "inicial/menuini.html")
     else:
         print(cursor)
@@ -117,9 +117,9 @@ def muestraDic(request):
 #Funciones de sesiones
 
 #Funcion para crear una cookie con el id de la base de datos de el usuaio logeado
-def set_session_view(request):
+def set_session_view(request,ID):
 
-    request.session['id'] = 'Iván'  #Llamar a la base de datos con un metodo para que te devuelva el id de usuario, cambiar el 'Iván' por eso
+    request.session['id'] = ID  #Llamar a la base de datos con un metodo para que te devuelva el id de usuario, cambiar el 'Iván' por eso
     get_session_view(request)
     return render(request, 'inicial/menuini.html')
 
