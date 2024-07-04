@@ -30,7 +30,7 @@ def enviarTest(request):
 
 def Ir_a_login(request):
     #hay que cambiar el if este que esta mal para verificar la cookie de sesion
-    if get_session_view(request) != 'Guest':
+    if get_session_view(request) == 'Guest':
         print("holasdafadfad")
         print(get_session_view(request))
         print(str(get_session_view(request)) == 'Guest')
