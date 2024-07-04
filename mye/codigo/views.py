@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 
-from codigo.models import Diccionario,MiraPass
+from codigo.models import Usuario
 
 def index(request):
     return render(request, "inicial/inicio.html")
@@ -36,7 +36,7 @@ def Ir_a_login(request):
 
 
 def CrearUsuario(request):
-    emple = Diccionario()
+    emple = Usuario()
     condicional = emple.devolverRoles()
     datosRoles = {
         'datosRoles': condicional,
@@ -52,6 +52,8 @@ def darAlta(request):
     password = request.POST['password']
     rol = request.POST['rol']
     #Llamar al procedimiento para dar de alta
+    usr = Usuario()
+    usr.insertarUsuario(nombre, apellido, email, password, rol)
     return render(request, "inicial/inicio.html")
 
 
@@ -74,11 +76,13 @@ def formularioDiccionarioPost(request):
 def CompruebaPass(request):
     mail = request.POST['txtemail']
     passw = request.POST['txtcontrasena']
-    mira = MiraPass()
+    mira = Usuario()
     cursor = mira.devolverpass(mail)
     if cursor.getvalue() == passw:
+        cursor2 = mira.devolverId(mail)
+        id = cursor2.getvalue()
         #creo una cookie para saber si el usuario esta logeado
-        set_session_view(request)
+        set_session_view(request,id)
         return render(request, "inicial/menuini.html")
     else:
         print(cursor)
@@ -98,11 +102,23 @@ def prueba(request):
     set_session_view(request)
     return render(request, "inicial/menuini.html")
 
+def muestraDic(request):
+    #aqui hay que traer la id con la función que ha hecho Iván
+
+
+    muestra = Usuario()
+    cursor=muestra.TraeDiccionarios(id)
+    contexto = {
+        'listado_diccionarios': cursor
+    }
+    return render(request, "inicial/Diccionarios.html", contexto)
+#con esto hacemos el for dentro del html Diccionarios
 
 #Funciones de sesiones
 
 #Funcion para crear una cookie con el id de la base de datos de el usuaio logeado
 def set_session_view(request):
+
     request.session['id'] = 'Iván'  #Llamar a la base de datos con un metodo para que te devuelva el id de usuario, cambiar el 'Iván' por eso
     get_session_view(request)
     return render(request, 'inicial/menuini.html')

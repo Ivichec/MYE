@@ -27,6 +27,18 @@
     </aside>
     <section id="contenidoPrincipal">
         <h1>Hacer un for con una lista de los diccionarios de la base de datos</h1>
+                <table border="1" style="width:100%">
+        <tr>
+            <th>DICCIONARIOS</th>
+
+        </tr>
+        {% for i in listado_diccionarios%}
+            <tr>
+                <td>{{i.TITULO}}</td>
+
+            </tr>
+       {% endfor%}
+</table>
         <br><br>
     <a class="nav" style="background-color: #FF8459" href="{% url 'iraformularioDic' %}">Crear Nuevo Diccionario</a>
     </section>
