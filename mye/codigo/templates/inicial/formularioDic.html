@@ -53,6 +53,10 @@
     </aside>
     <section id="contenidoPrincipal">
        <h1>Nuevo Diccionario</h1>
+        <br><br>
+       <h4>Nombre del Diccionario</h4>
+        <label for="campo2">Nombre: </label>
+        <input type="text" id="campo2" name="nombre"><br><br>
     <form id="formulario" action="{% url 'iraformularioDicPost' %}" method="post">
         {% csrf_token %}
         <div class="form-group">
@@ -60,8 +64,8 @@
             <input type="text" id="campo1" name="campo[]" placeholder="Nuevo campo 1">
         </div>
     </form>
-    <button type="button" onclick="addField()">Agregar más campos</button>
-    <button type="submit" form="formulario">Enviar Diccionario</button>
+    <button type="button" onclick="addField()">Agregar más palabras</button>
+    <button type="submit" form="formulario">Crear Diccionario</button>
     </section>
     <aside id="aLaDerecha">
 
