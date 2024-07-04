@@ -17,5 +17,6 @@ urlpatterns = [
     path('crearTests', views.crearTests, name='crearTests'),
     path('enviarTest', views.enviarTest, name='enviarTest'),
     path('menuIni', views.menuIni, name='menuIni'),
+    path('verDiccionario', views.verDiccionario, name='verDiccionario'),
     path('prueba', views.prueba, name='prueba'),
 ]

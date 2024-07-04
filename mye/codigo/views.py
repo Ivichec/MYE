@@ -1,21 +1,22 @@
-from django.shortcuts import render
-
-
+from django.shortcuts import render, redirect
+from deep_translator import GoogleTranslator
 from codigo.models import Usuario
 
 def index(request):
     return render(request, "inicial/inicio.html")
+
 def menuIni(request):
     return render(request, "inicial/menuini.html")
+
 def Diccionarios(request):
     id = get_session_view(request)
-    print("lfñfsdhgqpslñfodhg")
     muestra = Usuario()
     cursor = muestra.TraeDiccionarios(id)
     contexto = {
         'listado_diccionarios': cursor
     }
-    return render(request, "inicial/Diccionarios.html",contexto)
+    return render(request, "inicial/Diccionarios.html", contexto)
+
 def Tests(request):
     return render(request, "inicial/Tests.html")
 
@@ -23,24 +24,16 @@ def crearTests(request):
     return render(request, "inicial/crearTests.html")
 
 def enviarTest(request):
-    #cojer todos los post del formulario de crearTests.html y comprobarlo con la api para ver si lo ha hecho bien o no y devolverle
-    #un diccionario a resultadosTests.html con la nota que ha sacado
-    #despues enviar el resultado a la base de datos
     return render(request, "inicial/resultadosTest.html")
 
 def Ir_a_login(request):
-    #hay que cambiar el if este que esta mal para verificar la cookie de sesion
-    if get_session_view(request) == 'Guest':
-        print("holasdafadfad")
-        print(get_session_view(request))
-        print(str(get_session_view(request)) == 'Guest')
+    if get_session_view(request) != 'Guest':
+        return render(request, "inicial/menuini.html")
+    else:
         contexto = {
-            'errorlogeo': True
+            'errorlogeo': False
         }
         return render(request, "inicial/login.html", contexto)
-    else:
-        return render(request, "inicial/menuini.html")
-
 
 def CrearUsuario(request):
     emple = Usuario()
@@ -48,9 +41,7 @@ def CrearUsuario(request):
     datosRoles = {
         'datosRoles': condicional,
     }
-    print(datosRoles)
     return render(request, "inicial/registrar.html", datosRoles)
-
 
 def darAlta(request):
     nombre = request.POST['nombre']
@@ -58,27 +49,42 @@ def darAlta(request):
     email = request.POST['email']
     password = request.POST['password']
     rol = request.POST['rol']
-    #Llamar al procedimiento para dar de alta
     usr = Usuario()
     usr.insertarUsuario(nombre, apellido, email, password, rol)
-    return render(request, "inicial/inicio.html")
-
+    return redirect('index')
 
 def formularioDiccionario(request):
     return render(request, "inicial/formularioDic.html")
 
-
 def formularioDiccionarioPost(request):
-    #Compruebo que al llamar a este metodo estoy logeado con el if
     if get_session_view(request) != 'Guest':
+        nombre = request.POST['nombre1']
         datos = request.POST.getlist('campo[]')
-        print(datos)
-        #for i in range(len(datos)):
-        #llamar al procedimiento para metar datos a un diccionario
-        return render(request, "inicial/Diccionarios.html")
+        mira = Usuario()
+        cursor = mira.crearDic(int(get_session_view(request)), nombre)
+        for i in datos:
+            translated = GoogleTranslator(source='auto', target='en').translate(i)
+            mira.insertarPalabra(cursor, i, 'es', translated, 'en')
+        id = get_session_view(request)
+        muestra = Usuario()
+        cursor = muestra.TraeDiccionarios(id)
+        contexto = {
+            'listado_diccionarios': cursor,
+        }
+        return render(request, "inicial/Diccionarios.html", contexto)
     else:
-        return render(request, "inicial/inicio.html")
+        return redirect('index')
 
+def verDiccionario(request):
+    idDic = request.GET['idDic']
+    mira = Usuario()
+    cursor = mira.listaDiccionario(idDic)
+    print(cursor)
+    # Render the dictionary view with the cursor data (you might need to adjust this)
+    contexto = {
+        'listado_palabras': cursor
+    }
+    return render(request, "inicial/verDiccionario.html", contexto)
 
 def CompruebaPass(request):
     mail = request.POST['txtemail']
@@ -87,62 +93,41 @@ def CompruebaPass(request):
     cursor = mira.devolverpass(mail)
     if cursor.getvalue() == passw:
         cursor2 = mira.devolverId(mail)
-        #creo una cookie para saber si el usuario esta logeado
-        set_session_view(request,cursor2)
-        return render(request, "inicial/menuini.html")
+        set_session_view(request, cursor2)
+        return redirect('menuIni')
     else:
-        print(cursor)
-        print(passw)
         contexto = {
-            'errorlogeo': False
+            'errorlogeo': True
         }
         return render(request, "inicial/login.html", contexto)
 
-
 def cerrarSesion(request):
     delete_session_view(request)
-    return render(request, "inicial/inicio.html")
-
+    return redirect('index')
 
 def prueba(request):
     set_session_view(request)
-    return render(request, "inicial/menuini.html")
+    return redirect('menuIni')
 
 def muestraDic(request):
-    #aqui hay que traer la id con la función que ha hecho Iván
     id = get_session_view(request)
-    print("lfñfsdhgqpslñfodhg")
     muestra = Usuario()
-    cursor=muestra.TraeDiccionarios(id)
+    cursor = muestra.TraeDiccionarios(id)
     contexto = {
         'listado_diccionarios': cursor
     }
     return render(request, "inicial/Diccionarios.html", contexto)
-#con esto hacemos el for dentro del html Diccionarios
 
-#Funciones de sesiones
+def set_session_view(request, id):
+    request.session['id'] = id
+    return
 
-#Funcion para crear una cookie con el id de la base de datos de el usuaio logeado
-def set_session_view(request,id):
-
-    request.session['id'] =  id #Llamar a la base de datos con un metodo para que te devuelva el id de usuario, cambiar el 'Iván' por eso
-    get_session_view(request)
-    return render(request, 'inicial/menuini.html')
-
-
-#Funcion para ver el id de usuario del usuario logeado
 def get_session_view(request):
-    id = request.session.get('id', 'Guest')
-    return id
-    #return render(request, 'inicial/inicio.html', {'username': username})
+    return request.session.get('id', 'Guest')
 
-
-#Funcion para borrar la cookie(cuando hace el log out)
-#Con esta funcion el id que le hemos dado cuando se logeado se borra y la cookie se queda el Guest
 def delete_session_view(request):
     try:
         del request.session['id']
-        get_session_view(request)
     except KeyError:
         pass
-    return render(request, 'inicial/inicio.html')
+    return

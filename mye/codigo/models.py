@@ -1,5 +1,6 @@
 # Create your models here.
 import cx_Oracle
+import requests
 
 
 class Usuario:
@@ -39,13 +40,10 @@ class Usuario:
         finally:
             cursor.close()
 
-
-
     def devolverpass(self, miemail):
         cursor = self.connection.cursor()
         try:
             aaa = cursor.var(cx_Oracle.STRING)
-            print("wjh.gfqouñwhfglasdhglasjfdhglasfdg")
             args = (miemail, aaa)
             cursor.callproc('RETORNAPASS', args)
 
@@ -61,7 +59,6 @@ class Usuario:
         cursor = self.connection.cursor()
         try:
             var1 = cursor.var(cx_Oracle.NUMBER)
-            print("wjh.gfqouñwhfglasdhglasjfdhglasfdg")
             args = (miemail, var1)
             cursor.callproc('RETORNAIDUSR ', args)
 
@@ -77,13 +74,75 @@ class Usuario:
         cursor = self.connection.cursor()
         id = int(idusuario)
         try:
-            consulta = ("SELECT myeDICCIONARIOS.TITULO FROM myeDICCIONARIOS where USRID=:p1")
+            consulta = ("SELECT myeDICCIONARIOS.TITULO, myeDICCIONARIOS.Iddic FROM myeDICCIONARIOS where USRID=:p1")
             cursor.execute(consulta, (id,))
+            cursor = cursor.fetchall()
+
+        except self.connection.Error as error:
+            print("Error: ", error)
+        return cursor
+
+    def listaDiccionario(self, idDic):
+        cursor = self.connection.cursor()
+        try:
+            consulta = ("SELECT p.PALABRA, p.IDIOMAFROM myeDICCIONARIOS d JOIN myeDICTRAD dt ON d.IDDIC = dt.DIC JOIN myeTRADUCCIONES t ON dt.TRAD = t.IDTRAD JOIN myePALABRAS p ON t.IDPALORIG = p.IDPAL OR t.IDPALDEST = p.IDPAL WHERE d.IDDIC = 1;")
+            cursor.execute(consulta, (idDic,))
             cursor = cursor.fetchall()
             for A, in cursor:
                 roles1 = [rol[0] for rol in cursor]
-                print(cursor)
         except self.connection.Error as error:
             print("Error: ", error)
 
         return roles1
+
+    def crearDic(self, id, nombre):
+        cursor = self.connection.cursor()
+        try:
+            var1 = cursor.var(cx_Oracle.NUMBER)
+            print(nombre)
+            print(id)
+            args = (id, nombre, var1)
+            cursor.callproc('ALTADIC', args)
+        except self.connection.Error as error:
+            print("Error: ", error)
+        cursor.close()
+        return var1.getvalue()
+
+    def insertarPalabra(self, id, palabraEs, idiomaEs, palabraEn, idiomaEn):
+        cursor = self.connection.cursor()
+        try:
+            args = (id, palabraEs, idiomaEs, palabraEn, idiomaEn)
+            cursor.callproc('INSERTAPALABRA', args)
+        except self.connection.Error as error:
+            print("Error: ", error)
+        cursor.close()
+
+    def traducirPalabra(self, id):
+        cursor = self.connection.cursor()
+        try:
+            var1 = cursor.var(cx_Oracle.STRING)
+            args = (id,var1)
+            cursor.callproc('TRADUCEPALABRA', args)
+        except self.connection.Error as error:
+            print("Error: ", error)
+        cursor.close()
+        return var1.getvalue()
+
+
+def traduccionApi(target: str, text: str, model: str = "nmt") -> dict:
+    from google.cloud import translate_v2 as translate
+
+    translate_client = translate.Client()
+
+    if isinstance(text, bytes):
+        text = text.decode("utf-8")
+
+    # Text can also be a sequence of strings, in which case this method
+    # will return a sequence of results for each text.
+    result = translate_client.translate(text, target_language=target, model=model)
+
+    print("Text: {}".format(result["input"]))
+    print("Translation: {}".format(result["translatedText"]))
+    print("Detected source language: {}".format(result["detectedSourceLanguage"]))
+
+    return result

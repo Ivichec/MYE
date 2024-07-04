@@ -32,12 +32,12 @@
             <th>DICCIONARIOS</th>
 
         </tr>
-        {% for i in listado_diccionarios%}
-            <tr>
-                <td>{{i}}</td>
 
+            {% for diccionario in listado_diccionarios %}
+            <tr>
+                <td><a href="verDiccionario?idDic={{diccionario.1}}">{{ diccionario.0 }}</a></td>
             </tr>
-       {% endfor%}
+            {% endfor %}
 </table>
         <br><br>
     <a class="nav" style="background-color: #FF8459" href="{% url 'iraformularioDic' %}">Crear Nuevo Diccionario</a>
