@@ -17,8 +17,6 @@ class Usuario:
             for A, in roles:
                 roles1 = [rol[0] for rol in roles]
                 print(roles1)
-
-
         except self.connection.Error as error:
             print("Error: ", error)
 
@@ -77,12 +75,15 @@ class Usuario:
     def TraeDiccionarios(self, idusuario):
         # me hace falta traer la id con la función que ha puesto Iván
         cursor = self.connection.cursor()
-
+        id = int(idusuario)
         try:
             consulta = ("SELECT myeDICCIONARIOS.TITULO FROM myeDICCIONARIOS where USRID=:p1")
-            cursor.execute(consulta, (idusuario,))
-            print(cursor)
+            cursor.execute(consulta, (id,))
+            cursor = cursor.fetchall()
+            for A, in cursor:
+                roles1 = [rol[0] for rol in cursor]
+                print(cursor)
         except self.connection.Error as error:
             print("Error: ", error)
 
-        return cursor
+        return roles1

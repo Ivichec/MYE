@@ -8,7 +8,14 @@ def index(request):
 def menuIni(request):
     return render(request, "inicial/menuini.html")
 def Diccionarios(request):
-    return render(request, "inicial/Diccionarios.html")
+    id = get_session_view(request)
+    print("lfñfsdhgqpslñfodhg")
+    muestra = Usuario()
+    cursor = muestra.TraeDiccionarios(id)
+    contexto = {
+        'listado_diccionarios': cursor
+    }
+    return render(request, "inicial/Diccionarios.html",contexto)
 def Tests(request):
     return render(request, "inicial/Tests.html")
 
@@ -80,9 +87,8 @@ def CompruebaPass(request):
     cursor = mira.devolverpass(mail)
     if cursor.getvalue() == passw:
         cursor2 = mira.devolverId(mail)
-        id = cursor2.getvalue()
         #creo una cookie para saber si el usuario esta logeado
-        set_session_view(request,id)
+        set_session_view(request,cursor2)
         return render(request, "inicial/menuini.html")
     else:
         print(cursor)
@@ -104,8 +110,8 @@ def prueba(request):
 
 def muestraDic(request):
     #aqui hay que traer la id con la función que ha hecho Iván
-
-
+    id = get_session_view(request)
+    print("lfñfsdhgqpslñfodhg")
     muestra = Usuario()
     cursor=muestra.TraeDiccionarios(id)
     contexto = {
@@ -117,19 +123,18 @@ def muestraDic(request):
 #Funciones de sesiones
 
 #Funcion para crear una cookie con el id de la base de datos de el usuaio logeado
-def set_session_view(request):
+def set_session_view(request,id):
 
-    request.session['id'] = 'Iván'  #Llamar a la base de datos con un metodo para que te devuelva el id de usuario, cambiar el 'Iván' por eso
+    request.session['id'] =  id #Llamar a la base de datos con un metodo para que te devuelva el id de usuario, cambiar el 'Iván' por eso
     get_session_view(request)
     return render(request, 'inicial/menuini.html')
 
 
 #Funcion para ver el id de usuario del usuario logeado
 def get_session_view(request):
-    username = request.session.get('id', 'Guest')
-    #Si haces print te devuelve el id de usuario
-    print(username)
-    return render(request, 'inicial/inicio.html', {'username': username})
+    id = request.session.get('id', 'Guest')
+    return id
+    #return render(request, 'inicial/inicio.html', {'username': username})
 
 
 #Funcion para borrar la cookie(cuando hace el log out)
