@@ -20,7 +20,15 @@ def Diccionarios(request):
     return render(request, "inicial/Diccionarios.html", contexto)
 
 def Tests(request):
-    return render(request, "inicial/Tests.html")
+    user_id = get_session_view(request)
+    if user_id == 'Guest':
+        return render(request, "inicial/inicio.html")
+    usuario = Usuario()
+    tests_y_resultados = usuario.obtenerTestsYResultados(user_id)
+    contexto = {
+        'tests_y_resultados': tests_y_resultados
+    }
+    return render(request, "inicial/Tests.html",contexto)
 
 def crearTests(request):
     id = get_session_view(request)

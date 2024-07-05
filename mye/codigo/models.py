@@ -137,6 +137,43 @@ class Usuario:
             print("Error: ", error)
         cursor.close()
 
+    def obtenerTestsYResultados(self, user_id):
+        cursor = self.connection.cursor()
+        try:
+            consulta = """
+            SELECT 
+               t.IDTEST AS id_test,
+                COUNT(CASE WHEN r.RESULTADO = 1 THEN 1 ELSE NULL END) AS count_1,
+                COUNT(r.RESULTADO) AS count_total,
+                t.FECHA AS fecha
+            FROM 
+                myeRESULTADOS r
+            JOIN 
+                myeTESTS t ON r.TESTID = t.IDTEST
+            WHERE 
+                t.USRID = :user_id
+                
+            GROUP BY 
+                t.IDTEST, t.FECHA
+            """
+            cursor.execute(consulta, {'user_id': user_id})
+            resultados = cursor.fetchall()
+            columnas = [col[0].lower() for col in cursor.description]
+            resultado_dicts = [dict(zip(columnas, fila)) for fila in resultados]
+
+            # Calcular la nota sobre 10
+            for resultado in resultado_dicts:
+                if resultado['count_total'] > 0:
+                    resultado['nota_sobre_10'] = (resultado['count_1'] / resultado['count_total']) * 10
+                else:
+                    resultado['nota_sobre_10'] = 0
+
+            return resultado_dicts
+        except self.connection.Error as error:
+            print("Error: ", error)
+            return []
+        finally:
+            cursor.close()
     def traducirPalabra(self, id):
         cursor = self.connection.cursor()
         try:

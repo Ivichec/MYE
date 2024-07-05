@@ -16,7 +16,21 @@
     <aside id="aLaIzquierda">
     </aside>
     <section id="contenidoPrincipal">
-        <h1>Hacer un for con una lista de todos los tests que haya en la base de datos</h1>
+         <h1>Mis Ultimos Resultados</h1>
+      <table border="1" style="width:100%">
+        <tr>
+            <th>ID del Test</th>
+            <th>Resultado (Sobre 10)</th>
+            <th>Fecha</th>
+        </tr>
+        {% for test in tests_y_resultados %}
+        <tr>
+            <td>{{ test.id_test }}</td>
+            <td>{{ test.nota_sobre_10|floatformat:2 }}</td>
+            <td>{{ test.fecha }}</td>
+        </tr>
+        {% endfor %}
+    </table>
         <a class="nav" style="background-color: #FF8459" href="{% url 'crearTests' %}">Crear nuevo test</a>
     </section>
     <aside id="aLaDerecha">
