@@ -127,10 +127,11 @@ class Usuario:
         except self.connection.Error as error:
             print("Error: ", error)
         return var1.getvalue()
-    def insertaResultado(self, id, palabraEs, idiomaEs, palabraEn, idiomaEn):
+    def insertarResultado(self, idTests, id_trad, resultado):
         cursor = self.connection.cursor()
         try:
-            args = (id, palabraEs, idiomaEs, palabraEn, idiomaEn)
+            args = (idTests, id_trad, resultado)
+            print(args)
             cursor.callproc('INSERTARESULTADO', args)
         except self.connection.Error as error:
             print("Error: ", error)
@@ -153,6 +154,7 @@ class Usuario:
             consulta = f"""
             SELECT * FROM (
                 SELECT 
+                    t.IDTRAD AS id_trad, 
                     p_es.PALABRA AS palabra_espanol, 
                     p_es.IDIOMA AS id_idioma_espanol, 
                     p_en.PALABRA AS palabra_ingles, 

@@ -30,6 +30,7 @@
                 <td>
                     <input type="text" name="traduccion_{{ forloop.counter }}" required>
                     <input type="hidden" name="palabra_id_{{ forloop.counter }}" value="{{ palabra.PALABRA_INGLES }}">
+                     <input type="hidden" name="trad_id_{{ forloop.counter }}" value="{{ palabra.ID_TRAD }}">
                 </td>
             </tr>
             {% endfor %}

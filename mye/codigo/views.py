@@ -4,6 +4,7 @@ from datetime import datetime
 from codigo.models import Usuario
 
 def index(request):
+    cerrarSesion(request)
     return render(request, "inicial/inicio.html")
 
 def menuIni(request):
@@ -29,27 +30,31 @@ def crearTests(request):
         'palabras': palabras
     }
     return render(request, "inicial/crearTests.html",contexto)
+
 def enviarTest(request):
     if request.method == 'POST':
         palabras_correctas = 0
         total_palabras = 10
-
-        for i in range(1, total_palabras + 1):
-            respuesta_usuario = request.POST.get(f'traduccion_{i}')
-            respuesta_correcta = request.POST.get(f'palabra_id_{i}')
-            print(respuesta_usuario)
-            print(respuesta_correcta)
-            if respuesta_usuario and respuesta_correcta:
-                if respuesta_usuario.strip().lower() == respuesta_correcta.strip().lower():
-                    palabras_correctas += 1
-
-        nota = (palabras_correctas / total_palabras) * 100
-        print(nota)
         id = get_session_view(request)
         emple = Usuario()
         print(datetime.now())
         idTests = emple.altaTests(id, datetime.now())
-        emple.insertaResultado(idTests,)
+        print(int(idTests))
+        for i in range(1, total_palabras + 1):
+            respuesta_usuario = request.POST.get(f'traduccion_{i}')
+            respuesta_correcta = request.POST.get(f'palabra_id_{i}')
+            id_trad = request.POST.get(f'trad_id_{i}')
+            print("·lsakñfhdnalkjsbglñasblfg.afsnl-.ñgf´sajga´ñsfjg´ñkasfjgñkásfjgk")
+            print(id_trad)
+
+            if respuesta_usuario and respuesta_correcta:
+                resultado = 1 if respuesta_usuario.strip().lower() == respuesta_correcta.strip().lower() else 0
+                emple.insertarResultado(idTests, id_trad, resultado)
+                if resultado == 1:
+                    palabras_correctas += 1
+
+        nota = (palabras_correctas / total_palabras) * 100
+        print(nota)
         contexto = {
             'nota': nota,
             'palabras_correctas': palabras_correctas,
