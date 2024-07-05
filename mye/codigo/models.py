@@ -85,15 +85,17 @@ class Usuario:
     def listaDiccionario(self, idDic):
         cursor = self.connection.cursor()
         try:
-            consulta = ("SELECT p.PALABRA, p.IDIOMAFROM myeDICCIONARIOS d JOIN myeDICTRAD dt ON d.IDDIC = dt.DIC JOIN myeTRADUCCIONES t ON dt.TRAD = t.IDTRAD JOIN myePALABRAS p ON t.IDPALORIG = p.IDPAL OR t.IDPALDEST = p.IDPAL WHERE d.IDDIC = 1;")
-            cursor.execute(consulta, (idDic,))
-            cursor = cursor.fetchall()
-            for A, in cursor:
-                roles1 = [rol[0] for rol in cursor]
+            consulta = ("SELECT p_es.PALABRA AS palabra_espanol, p_es.IDIOMA AS id_idioma_espanol, p_en.PALABRA AS palabra_ingles, p_en.IDIOMA AS id_idioma_ingles FROM myeDICCIONARIOS d JOIN myeDICTRAD dr ON d.IDDIC = dr.DIC JOIN myeTRADUCCIONES t ON dr.TRAD = t.IDTRAD JOIN myePALABRAS p_es ON t.IDPALORIG = p_es.IDPAL JOIN myePALABRAS p_en ON t.IDPALDEST = p_en.IDPAL WHERE d.IDDIC = :p1")
+            cursor.execute(consulta, {'p1': idDic})
+            resultados = cursor.fetchall()
+            columnas = [col[0] for col in cursor.description]
+            # Convertir los resultados en una lista de diccionarios
+            resultado_dicts = [dict(zip(columnas, fila)) for fila in resultados]
+            return resultado_dicts
         except self.connection.Error as error:
             print("Error: ", error)
 
-        return roles1
+        return cursor
 
     def crearDic(self, id, nombre):
         cursor = self.connection.cursor()
@@ -116,6 +118,23 @@ class Usuario:
         except self.connection.Error as error:
             print("Error: ", error)
         cursor.close()
+    def altaTests(self, id,fecha):
+        cursor = self.connection.cursor()
+        try:
+            var1 = cursor.var(cx_Oracle.NUMBER)
+            args = (id, fecha,var1)
+            cursor.callproc('ALTATEST', args)
+        except self.connection.Error as error:
+            print("Error: ", error)
+        return var1.getvalue()
+    def insertaResultado(self, id, palabraEs, idiomaEs, palabraEn, idiomaEn):
+        cursor = self.connection.cursor()
+        try:
+            args = (id, palabraEs, idiomaEs, palabraEn, idiomaEn)
+            cursor.callproc('INSERTARESULTADO', args)
+        except self.connection.Error as error:
+            print("Error: ", error)
+        cursor.close()
 
     def traducirPalabra(self, id):
         cursor = self.connection.cursor()
@@ -127,6 +146,37 @@ class Usuario:
             print("Error: ", error)
         cursor.close()
         return var1.getvalue()
+
+    def obtenerPalabrasAleatorias(self, cantidad):
+        cursor = self.connection.cursor()
+        try:
+            consulta = f"""
+            SELECT * FROM (
+                SELECT 
+                    p_es.PALABRA AS palabra_espanol, 
+                    p_es.IDIOMA AS id_idioma_espanol, 
+                    p_en.PALABRA AS palabra_ingles, 
+                    p_en.IDIOMA AS id_idioma_ingles 
+                FROM 
+                    myePALABRAS p_es 
+                JOIN 
+                    myeTRADUCCIONES t ON p_es.IDPAL = t.IDPALORIG 
+                JOIN 
+                    myePALABRAS p_en ON t.IDPALDEST = p_en.IDPAL 
+                ORDER BY dbms_random.value
+            ) WHERE ROWNUM <= :cantidad
+            """
+            cursor.execute(consulta, {'cantidad': cantidad})
+            resultados = cursor.fetchall()
+            columnas = [col[0] for col in cursor.description]
+            resultado_dicts = [dict(zip(columnas, fila)) for fila in resultados]
+            print(resultado_dicts)
+            return resultado_dicts
+        except self.connection.Error as error:
+            print("Error: ", error)
+            return []
+        finally:
+            cursor.close()
 
 
 def traduccionApi(target: str, text: str, model: str = "nmt") -> dict:

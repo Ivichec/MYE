@@ -16,8 +16,26 @@
     <aside id="aLaIzquierda">
     </aside>
     <section id="contenidoPrincipal">
-        <h1>Hacer un formulario para realizar test donde te tendran que traer de la base de datos las palabras y el usuario le tenga que escribir la palabra en el idioma que elija</h1>
-        <a class="nav" style="background-color: #FF8459" href="{% url 'enviarTest' %}">Enviar tu Test</a>
+      <h1>Test de Ingles</h1>
+        <form method="post" action="{% url 'enviarTest' %}">
+        {% csrf_token %}
+        <table border="1" style="width:100%">
+            <tr>
+                <th>Palabra en Español</th>
+                <th>Traducción en Inglés</th>
+            </tr>
+            {% for palabra in palabras %}
+            <tr>
+                <td>{{ palabra.PALABRA_ESPANOL }}</td>
+                <td>
+                    <input type="text" name="traduccion_{{ forloop.counter }}" required>
+                    <input type="hidden" name="palabra_id_{{ forloop.counter }}" value="{{ palabra.PALABRA_INGLES }}">
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <button type="submit">Enviar Test</button>
+    </form>
     </section>
     <aside id="aLaDerecha">
 

@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from deep_translator import GoogleTranslator
+from datetime import datetime
 from codigo.models import Usuario
 
 def index(request):
@@ -21,10 +22,41 @@ def Tests(request):
     return render(request, "inicial/Tests.html")
 
 def crearTests(request):
-    return render(request, "inicial/crearTests.html")
-
+    id = get_session_view(request)
+    muestra = Usuario()
+    palabras = muestra.obtenerPalabrasAleatorias(10)  # Obtener 10 palabras aleatorias
+    contexto = {
+        'palabras': palabras
+    }
+    return render(request, "inicial/crearTests.html",contexto)
 def enviarTest(request):
-    return render(request, "inicial/resultadosTest.html")
+    if request.method == 'POST':
+        palabras_correctas = 0
+        total_palabras = 10
+
+        for i in range(1, total_palabras + 1):
+            respuesta_usuario = request.POST.get(f'traduccion_{i}')
+            respuesta_correcta = request.POST.get(f'palabra_id_{i}')
+            print(respuesta_usuario)
+            print(respuesta_correcta)
+            if respuesta_usuario and respuesta_correcta:
+                if respuesta_usuario.strip().lower() == respuesta_correcta.strip().lower():
+                    palabras_correctas += 1
+
+        nota = (palabras_correctas / total_palabras) * 100
+        print(nota)
+        id = get_session_view(request)
+        emple = Usuario()
+        print(datetime.now())
+        idTests = emple.altaTests(id, datetime.now())
+        emple.insertaResultado(idTests,)
+        contexto = {
+            'nota': nota,
+            'palabras_correctas': palabras_correctas,
+            'total_palabras': total_palabras
+        }
+
+        return render(request, "inicial/resultadosTest.html", contexto)
 
 def Ir_a_login(request):
     if get_session_view(request) != 'Guest':
@@ -60,6 +92,8 @@ def formularioDiccionarioPost(request):
     if get_session_view(request) != 'Guest':
         nombre = request.POST['nombre1']
         datos = request.POST.getlist('campo[]')
+        print("flñkjsadfgljashbflñgjasñlf")
+        print(datos)
         mira = Usuario()
         cursor = mira.crearDic(int(get_session_view(request)), nombre)
         for i in datos:
@@ -75,17 +109,17 @@ def formularioDiccionarioPost(request):
     else:
         return redirect('index')
 
+
 def verDiccionario(request):
-    idDic = request.GET['idDic']
+    idDic = request.GET.get('idDic')
+    print(idDic)
     mira = Usuario()
     cursor = mira.listaDiccionario(idDic)
     print(cursor)
-    # Render the dictionary view with the cursor data (you might need to adjust this)
     contexto = {
         'listado_palabras': cursor
     }
     return render(request, "inicial/verDiccionario.html", contexto)
-
 def CompruebaPass(request):
     mail = request.POST['txtemail']
     passw = request.POST['txtcontrasena']
