@@ -1,25 +1,32 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>MYE - Acceso</title>
+     <style>
+        a {
+            text-decoration: none;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="{% static 'estilos/styles.css'%}">
+    <!-- Enlace a Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap">
 </head>
 
 <body>
 <form method="post" action="BotonUser">
         {% csrf_token %}
-    <center>
-    <H1><B>FICHA DEL CLIENTE</B></H1>
-       Email<input type="text" name="txtemail" value="" /><br>
-       Contraseña<input type="text" name="txtcontrasena" value="" /><br>
-
-            <input type="SUBMIT" value="Enviar" />
-        <a href="NuevoUser" >Crear nuevo usuario</a>
-
-   </center>
+    <div>
+    <H1><B>Indica tus datos de acceso</B></H1><br>
+        Email: <input type="text" name="txtemail" value="" /><br><br>
+        Contraseña: <input type="text" name="txtcontrasena" value="" /><br><br>
+        <input type="SUBMIT" value="Enviar" /> <br><br>
+        <a href="NuevoUser" >Registrar Nuevo Usuario</a>
+   </div>
 </form>
     {% if errorlogeo != True %}
-             <H3>T'as equivocao </H3>
+             <H3>Datos incorrectos </H3>
     {% endif %}
 </body>
 </html>
