@@ -198,10 +198,10 @@ def bajausr(request):
     return render(request, "inicial/menuini.html")
 
 def tomodifusr (request):
-    lista = Usuario()
-    condicional = lista.devolverRoles()
+    rol = Usuario()
+    listaroles = rol.devolverRoles()
     datosRoles = {
-        'datosRoles': condicional,
+        'datosRoles': listaroles,
     }
     return render(request, "inicial/modifusr.html", datosRoles)
 
@@ -216,3 +216,7 @@ def modifusr(request):
     usr.modificaUsuario(id, nombre, apellido, email, password, rol)
     return render(request, "inicial/menuini.html")
 
+def tolistusr(request):
+    pass
+def listusr(rquest):
+    pass
