@@ -3,6 +3,8 @@ from deep_translator import GoogleTranslator
 from datetime import datetime
 from codigo.models import Usuario
 
+def Ir_a_que_es_mye(request):
+    return render(request, "inicial/queesmye.html")
 def index(request):
     cerrarSesion(request)
     return render(request, "inicial/inicio.html")
@@ -75,12 +77,11 @@ def enviarTest(request):
         emple = Usuario()
         print(datetime.now())
         idTests = emple.altaTests(id, datetime.now())
-        print(int(idTests))
+        print(idTests)
         for i in range(1, total_palabras + 1):
             respuesta_usuario = request.POST.get(f'traduccion_{i}')
             respuesta_correcta = request.POST.get(f'palabra_id_{i}')
             id_trad = request.POST.get(f'trad_id_{i}')
-            print("·lsakñfhdnalkjsbglñasblfg.afsnl-.ñgf´sajga´ñsfjg´ñkasfjgñkásfjgk")
             print(id_trad)
 
             if respuesta_usuario and respuesta_correcta:

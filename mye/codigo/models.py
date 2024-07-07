@@ -8,8 +8,6 @@ class Usuario:
     def __init__(self):
         self.connection = cx_Oracle.connect("system", "pythonoracle", "localhost/XE")
 
-    # def insertdato(self, idper, nombre, img, idserie):
-
     def devolverRoles(self):
         cursor = self.connection.cursor()
         try:
@@ -127,6 +125,7 @@ class Usuario:
         except self.connection.Error as error:
             print("Error: ", error)
         return var1.getvalue()
+
     def insertarResultado(self, idTests, id_trad, resultado):
         cursor = self.connection.cursor()
         try:

@@ -4,8 +4,9 @@ from codigo import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-  # path('a_que_es_mye', views.Ir_a_que_es_mye, name='iraqueesmye'),
+    path('a_que_es_mye', views.Ir_a_que_es_mye, name='iraqueesmye'),
     path('a_Login', views.Ir_a_login, name='iralogin'),
+    path('vueltamye', views.index, name='vueltamye'),
     path('menuIni', views.menuIni, name='menuIni'),
     path('BotonUser', views.CompruebaPass, name='BotonUser'),
     path('NuevoUser', views.CrearUsuario, name='NuevoUser'),
