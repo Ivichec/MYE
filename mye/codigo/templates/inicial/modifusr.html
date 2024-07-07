@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MYE - Nuevo Usuario</title>
+         <style>
+        a {
+            text-decoration: none;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="{% static 'estilos/styles.css'%}">
+    <!-- Enlace a Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap">
+</head>
+
+<body>
+<form method="post" action="modifusr">
+    {% csrf_token %}
+    <H1><B>MODIFICA UN USUARIO</B></H1>
+        <br>  <br>
+        Email: <input type="email" name="email" value="" /><br> <br><br>
+
+        Nuevo Nombre: <input type="text" name="nombre" value="" /><br> <br>
+        Nuevo Apellido: <input type="text" name="apellido" value="" /><br> <br>
+        Nueva Password: <input type="text" name="password" value="" /><br> <br>
+        Nuevo Rol:
+        <select name="rol" id="rol">
+            {% for results in datosRoles %}
+            <option value="{{results}}">{{results}}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+        <input type="SUBMIT" value="Modificar" />
+</form>
+    {% if resultado %}
+             <H3>Modificación realizada con éxito. Número de registros afectados:{{resultado}} </H3>
+    {% endif %}
+</body>
+</html>

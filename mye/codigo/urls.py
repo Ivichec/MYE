@@ -19,6 +19,9 @@ urlpatterns = [
     path('crearTests', views.crearTests, name='crearTests'),
     path('enviarTest', views.enviarTest, name='enviarTest'),
     path('cerrarSesion', views.cerrarSesion, name='cerrarSesion'),
-
+    path('toBajaUsr', views.tobajausr, name='tobajausr'),
+    path('bajausr', views.bajausr, name='bajausr'),
+    path('toModifUsr', views.tomodifusr, name='tomodifusr'),
+    path('modifusr', views.modifusr, name='modifusr'),
     path('prueba', views.prueba, name='prueba'),
 ]

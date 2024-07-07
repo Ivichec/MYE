@@ -186,3 +186,33 @@ def delete_session_view(request):
     except KeyError:
         pass
     return
+
+def tobajausr (request):
+    return render(request, "inicial/bajausr.html")
+
+def bajausr(request):
+    email = request.POST['email']
+    user = Usuario()
+    usrid = user.devolverId(email)
+    user.bajausr(usrid)
+    return render(request, "inicial/menuini.html")
+
+def tomodifusr (request):
+    lista = Usuario()
+    condicional = lista.devolverRoles()
+    datosRoles = {
+        'datosRoles': condicional,
+    }
+    return render(request, "inicial/modifusr.html", datosRoles)
+
+def modifusr(request):
+    nombre = request.POST['nombre']
+    apellido = request.POST['apellido']
+    email = request.POST['email']
+    password = request.POST['password']
+    rol = request.POST['rol']
+    usr = Usuario()
+    id = int(usr.devolverId(email))
+    usr.modificaUsuario(id, nombre, apellido, email, password, rol)
+    return render(request, "inicial/menuini.html")
+

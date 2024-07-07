@@ -13,12 +13,12 @@ class Usuario:
         try:
             cursor.execute("SELECT NOMBRE FROM myeROLES where nombre != 'Admin'")
             roles = cursor.fetchall()
+            print("Tengo los roles:", roles)
             for A, in roles:
                 roles1 = [rol[0] for rol in roles]
                 print(roles1)
         except self.connection.Error as error:
             print("Error: ", error)
-
         return roles1
 
     def insertarUsuario(self, nombre, apellido, email, password, rol):
@@ -66,6 +66,28 @@ class Usuario:
             print("Error: ", error)
         cursor.close()
         return var1.getvalue()
+
+    def bajausr(self, id):
+        cursor = self.connection.cursor()
+        cursor.callproc('BORRARUSR', (id,))
+        return cursor
+
+    def modificaUsuario(self, id, nombre, apellido, email, password, rol):
+        cursor = self.connection.cursor()
+        try:
+            consultaidrol = "SELECT IDROL FROM myeROLES WHERE NOMBRE = :p1"
+            cursor.execute(consultaidrol, (rol,))
+            rolid = cursor.fetchone()
+            args = (id, nombre, apellido, email, password, rolid[0])
+            print("Voy a insertar:", args)
+            res = cursor.callproc('MODIFICARUSR', args)
+            print("y resulta:", res)
+            return True
+        except cx_Oracle.DatabaseError as error:
+            print("La inserción dio error")
+            return False
+        finally:
+            cursor.close()
 
     def TraeDiccionarios(self, idusuario):
         # me hace falta traer la id con la función que ha puesto Iván
