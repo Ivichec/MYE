@@ -7,8 +7,36 @@ def index(request):
     cerrarSesion(request)
     return render(request, "inicial/inicio.html")
 
+def Ir_a_login(request):
+    print("Voy a login:", get_session_view(request))
+    if get_session_view(request) != 'Guest':
+        print("Soy alguien:", get_session_view(request))
+        return render(request, "inicial/menuini.html")
+    else:
+        contexto = {
+            'errorlogeo': False
+        }
+        print("no soy nadie:", get_session_view(request), contexto)
+        return render(request, "inicial/login.html", contexto)
+
 def menuIni(request):
     return render(request, "inicial/menuini.html")
+
+def CompruebaPass(request):
+    mail = request.POST['txtemail']
+    passw = request.POST['txtcontrasena']
+    mira = Usuario()
+    cursor = mira.devolverpass(mail)
+    if cursor.getvalue() == passw:
+        cursor2 = mira.devolverId(mail)
+        print("Es el usuario:", cursor2)
+        set_session_view(request, cursor2)
+        return redirect('menuIni')
+    else:
+        contexto = {
+            'errorlogeo': True
+        }
+        return render(request, "inicial/login.html", contexto)
 
 def Diccionarios(request):
     id = get_session_view(request)
@@ -71,14 +99,6 @@ def enviarTest(request):
 
         return render(request, "inicial/resultadosTest.html", contexto)
 
-def Ir_a_login(request):
-    if get_session_view(request) != 'Guest':
-        return render(request, "inicial/menuini.html")
-    else:
-        contexto = {
-            'errorlogeo': False
-        }
-        return render(request, "inicial/login.html", contexto)
 
 def CrearUsuario(request):
     emple = Usuario()
@@ -133,20 +153,7 @@ def verDiccionario(request):
         'listado_palabras': cursor
     }
     return render(request, "inicial/verDiccionario.html", contexto)
-def CompruebaPass(request):
-    mail = request.POST['txtemail']
-    passw = request.POST['txtcontrasena']
-    mira = Usuario()
-    cursor = mira.devolverpass(mail)
-    if cursor.getvalue() == passw:
-        cursor2 = mira.devolverId(mail)
-        set_session_view(request, cursor2)
-        return redirect('menuIni')
-    else:
-        contexto = {
-            'errorlogeo': True
-        }
-        return render(request, "inicial/login.html", contexto)
+
 
 def cerrarSesion(request):
     delete_session_view(request)

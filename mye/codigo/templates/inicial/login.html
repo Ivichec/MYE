@@ -22,11 +22,11 @@
         Email: <input type="text" name="txtemail" value="" /><br><br>
         Contraseña: <input type="text" name="txtcontrasena" value="" /><br><br>
         <input type="SUBMIT" value="Enviar" /> <br><br>
-        <a href="NuevoUser" >Registrar Nuevo Usuario</a>
+        <a href="NuevoUser">Crea tu Usuario</a>
    </div>
 </form>
-    {% if errorlogeo != True %}
-             <H3>Datos incorrectos </H3>
+    {% if errorlogeo == True %}
+             <H3>Datos incorrectos</H3>
     {% endif %}
 </body>
 </html>
