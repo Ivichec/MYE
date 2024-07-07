@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>MYE - Doccionarios</title>
+    <title>MYE - Lista de Usuarios</title>
     <link href="{% static 'estilos/styles.css'%}" rel="stylesheet" type="text/css">
 </head>
 <style>
@@ -26,22 +26,23 @@
     <aside id="aLaIzquierda">
     </aside>
     <section id="contenidoPrincipal">
-        <h1>Hacer un for con una lista de los diccionarios de la base de datos</h1>
-                <table border="1" style="width:100%">
+        <h1>LISTA DE USUARIOS</h1>
+        <table border="1" style="width:100%">
         <tr>
-            <th>DICCIONARIOS</th>
-
+            <th>NOMBRE</th>
+            <th>APELLIDOS</th>
+            <th>EMAIL</th>
         </tr>
-
-            {% for diccionario in listado_diccionarios %}
+            {% for usr in listado_usuarios %}
             <tr>
-                <td><a href="verDiccionario?idDic={{diccionario.1}}">{{ diccionario.0 }}</a></td>
+                <td><{{usr.NOMBRE}}</td>
+                <td><{{usr.APELLIDOS}}</td>
+                <td><{{usr.EMAIL}}</td>
             </tr>
             {% endfor %}
-</table>
+        </table>
         <br><br>
-    <a class="nav" style="background-color: #FF8459" href="{% url 'iraformularioDic' %}">Crear Nuevo Diccionario</a>
-    </section>
+      </section>
     <aside id="aLaDerecha">
 
     </aside>

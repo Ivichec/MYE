@@ -217,6 +217,11 @@ def modifusr(request):
     return render(request, "inicial/menuini.html")
 
 def tolistusr(request):
-    pass
-def listusr(rquest):
-    pass
+    users = Usuario()
+    cursor = users.listausuarios()
+    contexto = {
+        'listado_usuarios': cursor
+    }
+    print("La lista de usuarios que va es:", contexto)
+    return render(request, "inicial/tolistusr.html", contexto)
+

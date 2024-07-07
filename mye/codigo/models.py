@@ -89,6 +89,20 @@ class Usuario:
         finally:
             cursor.close()
 
+    def listausuarios(self):
+        cursor = self.connection.cursor()
+        try:
+            consulta = ('SELECT NOMBRE, APELLIDOS, EMAIL FROM myeUSUARIOS')
+            cursor.execute (consulta, )
+            resul = cursor.fetchall()
+            cols = [col[0] for col in cursor.description]
+            # Convertir los resultados en una lista de diccionarios
+            resultado_users = [dict(zip(cols, fila)) for fila in resul]
+            return resultado_users
+        except self.connection.Error as error:
+            print("Error: ", error)
+        return cursor
+
     def TraeDiccionarios(self, idusuario):
         # me hace falta traer la id con la función que ha puesto Iván
         cursor = self.connection.cursor()

@@ -23,5 +23,6 @@ urlpatterns = [
     path('bajausr', views.bajausr, name='bajausr'),
     path('toModifUsr', views.tomodifusr, name='tomodifusr'),
     path('modifusr', views.modifusr, name='modifusr'),
+    path('toListUsr', views.tolistusr, name='tolistusr'),
     path('prueba', views.prueba, name='prueba'),
 ]
